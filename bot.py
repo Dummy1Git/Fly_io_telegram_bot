@@ -44,7 +44,7 @@ def choose(dict,message):
         [InlineKeyboardButton(text = key, url = value )]
         )
     keyboard = InlineKeyboardMarkup(buttons)
-    bot.reply_to(message,text = f'🎧 <b>{message.text}</b> movie songs 🎧',parse_mode='HTML' ,reply_markup = keyboard)
+    bot.reply_to(message,text = f'🎧 <b>{message.text}</b> songs 🎧',parse_mode='HTML' ,reply_markup = keyboard)
 
 
 @bot.message_handler(commands=['start'])
@@ -53,7 +53,7 @@ def send_welcome(message):
 
 @bot.message_handler(func= lambda msg: msg.content_type=='text')
 def input_query(movie):
-    query= movie + ' masstamilan'
+    query= movie.text + ' masstamilan'
     tamilpattu_link='https://tamilpaatu.com/'
     try:
         for j in search(query, tld="co.in", num=1, stop=1, pause=2):
