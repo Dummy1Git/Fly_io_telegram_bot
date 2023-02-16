@@ -5,9 +5,10 @@ import requests
 import os
 import telebot
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
+import time 
 
 load_dotenv()
-
+telebot.apihelper.SESSION_TIME_TO_LIVE = None
 API_KEY = os.getenv('API_KEY')
 
 url='https://masstamilan.dev'
@@ -44,7 +45,7 @@ def choose(dict,message):
         [InlineKeyboardButton(text = key, url = value )]
         )
     keyboard = InlineKeyboardMarkup(buttons)
-    bot.reply_to(message,text = f'🎧 <b>{message.text}</b> songs 🎧',parse_mode='HTML' ,reply_markup = keyboard)
+    bot.reply_to(message,text = f'🎧 <b>{message.text}</b> movie songs 🎧',parse_mode='HTML' ,reply_markup = keyboard)
 
 
 @bot.message_handler(commands=['start'])
@@ -59,8 +60,9 @@ def input_query(movie):
         for j in search(query, tld="co.in", num=1, stop=1, pause=2):
             if j[:23]==tamilpattu_link:
                 web_crawler(j,movie)
-    except:
-        bot.send_message(movie.chat.id,text="Oops!! not found in the website")
+    except (ConnectionAbortedError, ConnectionResetError, ConnectionRefusedError, ConnectionError):
+        time.sleep(5)
+        bot.send_message(movie.chat.id,text="error occured")
 
 
 if __name__ == "__main__":
